@@ -37,6 +37,9 @@ def find_yajl_cffi(ffi, required):
     try:
         yajl = ffi.dlopen('yajl')
     except OSError:
-        raise YAJLImportError('Unable to load YAJL.')
+        try:
+            yajl = ffi.dlopen('libyajl.so.2')
+        except OSError:
+            raise YAJLImportError('Unable to load YAJL.')
     require_version(yajl.yajl_version(), required)
     return yajl
